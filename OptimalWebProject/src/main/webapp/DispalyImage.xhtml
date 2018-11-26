@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+        <link href="assests/ShowData/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link rel="stylesheet" type="text/css" href="assests/ShowData/css/table-style.css" />
+        <link href="assests/ShowData/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    </h:head>
+    <h:body id="principle">
+
+        <h:form enctype="multipart/form-data">
+
+            <!-- banner -->
+            <div class="wthree_agile_admin_info">
+
+
+                <!-- /inner_content-->
+                <div class="inner_content">
+                    <!-- /inner_content_w3_agile_info-->
+
+
+
+                    <p:growl id="message" showDetail="false" life="6000" />
+
+                    <h:panelGrid columns="4" width="100%" >
+
+                        <p:outputLabel for="fn" value="Name : "/>
+                        <p:inputText id="fn" placeholder="Name" value="#{teacher.name}"   />
+
+
+                        <p:outputLabel for="gender" value="Gender : " />
+                        <p:selectOneRadio id="gender" value="#{teacher.gender}"   >
+                            <f:selectItem itemLabel=" Femal " itemValue="Femal"/>
+                            <f:selectItem itemLabel=" Male " itemValue="Male"/>
+                        </p:selectOneRadio>
+
+                        <p:outputLabel for="bD" value="Birthday : " />
+                        <p:calendar  id="bD" value="#{teacher.birthdate}"  placeholder="dd/MM/yyyy"  >
+                            <p:ajax event="dateSelect" listener="#{teacher.onDateSelect}" update="message" />
+                            <!-- <f:convertDateTime parent="MM/dd/yyyy" /> -->
+                        </p:calendar>
+
+
+
+
+
+                        <p:outputLabel for="counterymenu" value="Country : " />
+
+                        <h:panelGroup  >
+                            <p:selectOneMenu id="counterymenu" value="#{teacher.countery}"     >
+
+                                <f:selectItem itemLabel="Choose Countery" />
+                                <f:selectItem itemLabel=" Palestine " itemValue="Palestine"/>
+                                <f:selectItem itemLabel=" Egypt " itemValue="Egypt"/>
+
+                                <p:ajax event="change" update="citymenu" listener="#{teacher.handleCities}"/>  
+
+                            </p:selectOneMenu>
+
+
+                            <p:outputLabel for="citymenu"  value="City : " />
+
+                            <p:selectOneMenu    id="citymenu"   value="#{teacher.city}"     >
+                                <f:selectItem itemLabel="Choose City" />
+                                <f:selectItems  value="#{teacher.optionlist}"/>
+
+                            </p:selectOneMenu>
+
+
+
+
+                            <p:outputLabel for="street" value="Street : "/>
+                            <p:inputText id="street"  value="#{teacher.street}" validatorMessage="XX"    />
+                        </h:panelGroup>
+
+                        <p:outputLabel for="habits" value="Habbits : " />
+                        <p:selectManyMenu id="habits" value="#{teacher.habits}"  >
+                            <f:selectItem itemLabel="facebook" itemValue="facebook"/>
+                            <f:selectItem itemLabel=" eating " itemValue="eating"/>
+                            <f:selectItem itemLabel=" watcibg tv " itemValue="watcibg tv"/>
+                            <f:selectItem itemLabel=" playing footbal " itemValue="playing footbal"/>
+                        </p:selectManyMenu>
+
+
+
+
+
+
+
+
+                        <p:outputLabel  value="File " />
+                        <h:panelGrid>
+                            <p:fileUpload fileUploadListener="#{teacher.handleFileUpload}"
+                                          mode="advanced"
+                                          update="message"
+                                          label="Choose a file or drag and drop it here"
+                                          sizeLimit="10485760"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                          invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
+                                          invalidFileMessage="You are allowed to upload only images !"
+                                          required="true" 
+                                          />
+
+
+
+
+
+
+
+
+                            <div class="social_media_w3ls">
+                                <p:graphicImage value="#{teacher.displayTeacherImage}" rendered="#{teacher.buttomVisable eq true}" >
+                                    <f:param name="teacherID" value="#{teacher.id}" />
+                                </p:graphicImage>
+                            </div>
+                        </h:panelGrid>
+
+
+                    </h:panelGrid>
+
+                    <br/>
+                    <br/>
+
+                    <div align="center">
+                        <h:commandButton type="buttomm" value="Save" action="#{teacher.saveTeacher()}" rendered="#{teacher.buttomVisable eq false}"  />
+
+
+                        <h:commandButton value="Search" action="#{teacher.searchTeacher()}" />
+
+
+                        <h:commandButton value="Update" action="#{teacher.updateCurrentTeacher()}"  rendered="#{teacher.buttomVisable eq true}"  /> 
+
+                        <h:commandButton value="Clear" action="#{teacher.clearTeacherForm()}"  />
+                    </div>
+
+
+
+
+
+                    <h:outputText value="#{teacher.displayTeachers()}" />
+
+
+
+                    <div class="clearfix"></div>
+
+                    <div class="inner_content_w3_agile_info two_in">
+
+                        <br/><br/>
+
+                        <!-- tables -->
+
+                        <div class="agile-tables">
+                            <div class="w3l-table-info agile_info_shadow">
+                                <h3 class="w3_inner_tittle two">Your Information</h3>
+
+
+                                <h:outputText id="refreshTable" value="#{teacher.displayTeachers()}"/>
+
+                                <p:dataTable var="user" value="#{teacher.teacherTabl}" widgetVar="usersTable" emptyMessage="No users found with given criteria" >
+
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Search all fields:" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+
+                                    <p:column filterBy="#{user.id}" sortBy="#{user.id}" headerText="ID" footerText="lte" filterMatchMode="lte"  style="width:15%">
+                                        <f:facet name="filter">
+                                            <p:spinner onchange="PF('usersTable').filter()" styleClass="year-spinner">
+                                                <f:converter converterId="javax.faces.Integer" />
+                                            </p:spinner>
+                                        </f:facet>
+                                        <h:outputText value="#{user.id}" />
+                                    </p:column>
+
+
+
+
+                                    <div class="social_media_w3ls">
+                                        <p:column headerText="Image" style="width:20%">
+                                            <p:graphicImage value="#{teacher.displayTeacherImage}">
+                                                <f:param name="teacherID" value="#{user.id}" />
+                                            </p:graphicImage>
+                                        </p:column>
+                                    </div>
+
+
+
+
+
+
+
+                                    <p:column filterBy="#{user.name}"  sortBy="#{user.name}" headerText="Name" footerText="contains" filterMatchMode="contains">
+                                        <h:outputText value="#{user.name}" />
+                                    </p:column>
+
+
+
+                                    <p:column filterBy="#{user.countery}" sortBy="#{user.countery}" headerText="Countery" footerText="Contains">
+
+                                        <h:outputText value="#{user.countery}" />
+                                    </p:column>
+
+
+                                    <p:column filterBy="#{user.city}" headerText="City"  sortBy="#{user.city}" footerText="in">
+
+                                        <h:outputText value="#{user.city}" />
+                                    </p:column>
+
+
+
+                                    <p:column filterBy="#{user.street}"  sortBy="#{user.street}" headerText="Street" footerText="Contains" >
+                                        <h:outputText value="#{user.street}">
+                                        </h:outputText>
+                                    </p:column>
+
+
+                                    <p:column filterBy="#{user.habits}"  sortBy="#{user.habits}" headerText="Habits" footerText="Contains" >
+                                        <h:outputText value="#{user.habits}">
+                                        </h:outputText>
+                                    </p:column>
+
+
+                                    <p:column filterBy="#{user.gender}"  sortBy="#{user.gender}" headerText="gender" footerText="equals" filterMatchMode="equals">
+                                        <f:facet name="filter">
+                                            <p:selectOneButton onchange="PF('usersTable').filter()">
+
+                                                <f:selectItem itemLabel="All" itemValue="" />
+                                                <f:selectItem itemLabel="Male" itemValue="Male" />
+                                                <f:selectItem itemLabel="Femal" itemValue="Femal" />
+                                            </p:selectOneButton>
+                                        </f:facet>
+                                        <h:outputText value="#{user.gender}" />
+                                    </p:column>
+
+
+
+
+
+                                    <p:column filterBy="#{user.birthdate}"  sortBy="#{user.birthdate}" headerText="BirthDate" footerText="Contains" >
+                                        <h:outputText value="#{user.birthdate}">
+                                            <!-- <f:convertDateTime pattern="dd-MM-yyyy"/> -->
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column  headerText="Option"   >
+                                        <h:commandButton value="Details" action="#{teacher.displayCurrentTeacher(user)}">
+
+                                        </h:commandButton> 
+
+                                        <p:outputLabel value="       " />
+                                        <h:commandButton value="Delete" action="#{teacher.deleteCurrentTeacher(user)}"/> 
+                                    </p:column>
+
+                                </p:dataTable>
+
+
+
+
+                            </div>
+
+
+
+                        </div>
+                        <!-- //inner_content_w3_agile_info-->
+                    </div>
+
+                </div>
+                <!-- //inner_content-->
+
+                <!-- tables -->
+
+            </div>
+        </h:form>
+
+    </h:body>
+</html>
+

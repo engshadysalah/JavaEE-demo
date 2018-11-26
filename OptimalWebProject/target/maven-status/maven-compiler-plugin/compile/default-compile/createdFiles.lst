@@ -1,0 +1,6 @@
+com/opitmal/teacerbean/TeacherBean.class
+com/opitmal/hibernate/HibernateUtil.class
+com/optimal/dbmodel/Teacher.class
+com/optimal/uploadingimage/ImageReader.class
+com/optimal/test/UploadImage.class
+com/optimal/dao/TeacherDAO.class

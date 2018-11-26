@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title> Teacher Form </title>
+
+        <!--upload img -->
+        <link rel="stylesheet" type="text/css" href="Assests/css/style_uplodIgm.css" />
+    </h:head>
+    <h:body>
+
+        <f:view>
+            <h:form enctype="multipart/form-data">
+                <p:growl id="msgs" showDetail="true" />
+
+
+
+                <br/> <br/> <br/>
+
+                <p:panelGrid columns="4"  >
+
+                    <p:outputLabel value="Name : "/>
+                    <p:inputText id="fn" placeholder="Name" value="#{teacher.name}"    />
+
+
+                    <p:outputLabel value="Gender : " />
+                    <p:selectOneRadio value="#{teacher.gender}" >
+                        <f:selectItem itemLabel=" Femal " itemValue="Femal"/>
+                        <f:selectItem itemLabel=" Male " itemValue="Male"/>
+                    </p:selectOneRadio>
+
+
+                    <p:outputLabel value="Birthday : " />
+                    <p:calendar  value="#{teacher.birthdate}"  >
+                        <p:ajax event="dateSelect" listener="#{teacher.onDateSelect}" update="msgs" />
+                    </p:calendar>
+
+
+                    <p:message for="fn" showDetail="true" showSummary="true"   />
+                    <!--<p:message for="mn" showDetail="true" showSummary="true"   />
+                    <p:message for="ln" showDetail="true" showSummary="true"   /> -->
+                </p:panelGrid>
+                <br/>
+
+
+                <p:panelGrid columns="2">
+
+
+                    <p:outputLabel value="Country : " />
+
+                    <p:selectOneMenu value="#{teacher.countery}"     >
+
+                        <f:selectItem itemLabel="Choose Countery" />
+                        <f:selectItem itemLabel=" Palestine " itemValue="Palestine"/>
+                        <f:selectItem itemLabel=" Egypt " itemValue="Egypt"/>
+
+                        <p:ajax event="change" update="citymenu" listener="#{teacher.handleCities}"/>  
+
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel value="City : " />
+
+                    <p:selectOneMenu    id="citymenu"   value="#{teacher.city}"    >
+                        <f:selectItem itemLabel="Choose City" />
+                        <f:selectItems  value="#{teacher.optionlist}"/>
+
+                    </p:selectOneMenu>
+
+
+
+
+                    <p:outputLabel value="Street : "/>
+                    <p:inputText id="add"  value="#{teacher.street}" validatorMessage="XX"   />
+
+
+                    <p:outputLabel value="Habbits : " />
+                    <p:selectManyMenu value="#{teacher.habits}"     >
+                        <f:selectItem itemLabel="facebook" itemValue="facebook"/>
+                        <f:selectItem itemLabel=" eating " itemValue="eating"/>
+                        <f:selectItem itemLabel=" watcibg tv " itemValue="watcibg tv"/>
+                        <f:selectItem itemLabel=" playing footbal " itemValue="playing footbal"/>
+                    </p:selectManyMenu>
+
+
+                </p:panelGrid>
+
+
+
+
+
+                <br/><br/>
+
+
+                <div  id="upload-button">
+
+                    <h:inputFile id="photo"  >
+
+
+                    </h:inputFile>
+                </div> 
+
+
+                <div class="social_media_w3ls">
+                    <img src="http://localhost:8080/OptimalWebProject/ImageReader?img=#{user.imageName}"  height="100" width="100" style="border: 3px solid # DDD;" />
+                </div> 
+
+                <p:panelGrid columns="4" >
+
+                    <h:commandButton type="buttomm" value="Save" action="#{teacher.saveTeacher()}"  />
+
+
+                    <h:commandButton value="Search" action="#{teacher.searchTeacher()}" />
+
+                    <!--    <h:commandButton value="Update" action="{mainPage.updateItem()}"/> -->
+
+                    <h:commandButton value="Clear" action="#{teacher.clearTeacherForm()}"  />
+
+                </p:panelGrid>
+
+
+
+                <h:outputText value="#{teacher.displayTeachers()}"/>
+
+                <br/><br/><br/>
+
+
+                <p:dataTable id="tabl" value="#{teacher.teacherTabl}" var="user" >
+
+                    <f:facet name="caption"> Teacher Table</f:facet>
+
+                    <p:column id="id" headerText="ID" width="40">
+                        <f:facet name="header">ID</f:facet>
+                        <p:outputLabel value="#{user.id}" /> 
+                        <!--<h:commandLink value="{user.ID}"  action="{mainPage.GetSpecificItem(user.ID)}" /> -->
+                    </p:column>
+
+
+
+                    <p:column id="img" headerText="Image" width="100">
+                        <f:facet name="header">Image</f:facet>
+                        <div class="social_media_w3ls">
+                            <img src="http://localhost:8080/OptimalWebProject/ImageReader?img=#{user.imageName}"  height="100" width="100" style="border: 3px solid # DDD;" />
+                        </div>  
+
+                    </p:column>
+
+
+                    <p:column id="name" headerText="Name" >
+                        #{user.name} 
+                    </p:column>
+
+                    <p:column id="gender" headerText="Gender" >
+                        <h:outputText value="#{user.gender}"/>
+                    </p:column>
+
+                    <p:column id="addd" headerText="BirthDay" >
+                        <h:outputText value="#{user.birthdate}"/>
+                    </p:column>
+                    <p:column id="countery" headerText="Country" >
+                        <h:outputText value="#{user.countery}"/>
+                    </p:column>
+                    <p:column id="bD" headerText="City" >
+                        <h:outputText value="#{user.city}"/>
+                    </p:column>
+
+                    <p:column id="str" headerText="Street" >
+                        <h:outputText value="#{user.street}"/>
+                    </p:column>
+
+
+                    <p:column id="ha" headerText="Habits" >
+                        <h:outputText value="#{user.habits}"/>
+                    </p:column>
+
+                    <p:column  headerText="Option" width="350">
+                        <h:commandButton value="Details" action="#{teacher.displayCurrentTeacher(user)}"/> 
+                        <p:outputLabel value="       " />
+                        <h:commandButton value="Delete" action="#{teacher.deleteCurrentTeacher(user.id)}"/> 
+                        <p:outputLabel value="       " />
+                        <h:commandButton value="Update" action="#{teacher.updateCurrentTeacher(user)}"/> 
+                    </p:column>
+                </p:dataTable>
+
+ 
+
+            </h:form>
+        </f:view>
+
+
+    </h:body>
+</html>
+

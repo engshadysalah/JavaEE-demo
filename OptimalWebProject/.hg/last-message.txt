@@ -1,0 +1,1 @@
+delet , update , delete Teacher and display data in filter Table

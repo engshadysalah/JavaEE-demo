@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form>
+
+            <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"
+                          mode="advanced"
+                          update="messages"
+                          label="Choose a file or drag and drop it here"
+                          sizeLimit="10485760"
+                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                          invalidSizeMessage="The maximum file size allowed is 10 Megabytes !"
+                          invalidFileMessage="You are allowed to upload only images !"
+                          />
+            <p:growl id="messages" showDetail="true" life="5000"/>
+
+
+        </h:form>
+    </h:body>
+</html>
+
